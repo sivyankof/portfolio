@@ -1,25 +1,31 @@
 body {
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
-    // background-color: #0a3d62;
-    // background-color: #374256;
+    background: linear-gradient(45deg, #13547a, #80d0c7);
 }
 
 header {
-    // box-sizing: border-box;
-    // margin: 0;
     height: 100vh;
+    position: relative;
 
-    h1 {
+    & div {
         position: absolute;
-        color: whitesmoke;
-        font-weight: 300;
-        font-size: 4rem;
-        text-align: center;
         top: 40vh;
         left: 26vw;
         z-index: 10;
         margin: 0;
+
+        & h1 {
+            color: whitesmoke;
+            font-weight: 300;
+            font-size: 4rem;
+            text-align: center;
+        }
+
+        & span {
+            color: crimson;
+            font-weight: 500;
+        }
     }
 
     #stars {
@@ -36,19 +42,82 @@ header {
     #stars:hover {
         background: #3d689c;
     }
+
+    $total-arrows: 3;
+    $arrow-line-length: 50px;
+    $arrow-line-width: 4px;
+
+    // arrow animtion + choose direction
+    @mixin arrow-transitions($rot: 0deg) {
+        transform: translate(-50%, -50%) rotateZ($rot);
+    }
+
+    // arrows
+    .arrow-container {
+        display: block;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        top: 60%;
+        left: 50%;
+        @include arrow-transitions(0deg);
+        &:hover {
+            cursor: pointer;
+            .arrow {
+                top: 50%;
+                &:before {
+                    @include arrow-transitions(-30deg);
+                }
+                &:after {
+                    @include arrow-transitions(30deg);
+                }
+            }
+        }
+    }
+    .arrow {
+        position: absolute;
+        left: 50%;
+        transition: all 0.4s ease;
+        &:before,
+        &:after {
+            transition: all 0.4s ease;
+            content: '';
+            display: block;
+            position: absolute;
+            transform-origin: bottom right;
+            background: #fff;
+            width: $arrow-line-width;
+            height: $arrow-line-length;
+            border-radius: 10px;
+            transform: translate(-50%, -50%) rotateZ(-45deg);
+        }
+        &:after {
+            transform-origin: bottom left;
+            transform: translate(-50%, -50%) rotateZ(45deg);
+        }
+        @for $i from 1 through $total-arrows {
+            &:nth-child(#{$i}) {
+                opacity: 0.3 * $i;
+                top: 15 + (100% * $i/5);
+            }
+        }
+    }
 }
 
 main {
-    background-color: whitesmoke;
+    background-color: #252934;
     margin: 0;
     width: 100vw;
+    padding-bottom: 50px;
 
     h2 {
-        color: #000000bf;
+        color: crimson;
         text-align: center;
+        font-weight: 300;
         margin: 0;
         padding-top: 30px;
         font-size: 4rem;
+        text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.452);
     }
 
     .pages {
@@ -67,23 +136,25 @@ main {
             height: 300px;
             margin: 20px;
             overflow: hidden;
-            // box-sizing: border-box;
+            box-shadow: 8px 8px 20px rgb(0, 0, 0);
+            transition: 0.3s ease-in-out;
 
             & .description {
                 position: absolute;
-                padding: 10px;
-                background-color: #ffffff;
+                padding: 10px 20px 10px 20px;
+                background-color: #ffffffe5;
                 color: black;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 border: 1px solid black;
                 max-height: 100%;
-                transform: scale(0.8) translateY(125%);
+                transform: translateY(125%);
 
                 transition: 0.3s ease-in-out;
 
                 h3 {
+                    padding-top: 10px;
                     text-align: center;
                     margin: 0;
                 }
@@ -94,6 +165,10 @@ main {
                     color: #e31b6d;
                     font-weight: 300;
                 }
+                p {
+                    padding-top: 5px;
+                    margin: 0;
+                }
             }
 
             img {
@@ -102,28 +177,29 @@ main {
 
             &:hover {
                 .description {
+                    height: 95%;
+
                     transform: scale(1) translateY(0);
                     color: black;
                 }
 
-                img {
-                    transform: scale(0.9);
-                    transition: transform 0.3s ease-in-out;
-                }
+                transform: scale(1.05);
+                box-shadow: 20px 20px 25px rgb(0, 0, 0);
             }
         }
     }
 }
 
 footer {
-    height: 15vh;
+    height: 12vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #596275;
+    background-color: #1b242f;
 
     .links {
+        margin-top: 25px;
         list-style: none;
         display: flex;
         margin: 0;
@@ -137,11 +213,11 @@ footer {
             align-items: center;
             cursor: pointer;
 
-            height: 60px;
-            width: 60px;
+            height: 35px;
+            width: 35px;
             background-color: crimson;
             border-radius: 50px;
-            box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.192);
+            box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.192);
             transition: 0.3s;
 
             .fa-github-alt,
@@ -153,7 +229,17 @@ footer {
         }
 
         li:hover {
-            transform: scale(1.1);
+            background-color: #80d0c7;
+        }
+    }
+    p {
+        margin: 0;
+        margin-top: 15px;
+        color: darkgrey;
+        font-weight: 100;
+
+        span {
+            color: crimson;
         }
     }
 }
